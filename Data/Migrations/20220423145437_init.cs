@@ -49,6 +49,18 @@ namespace PresonelManagmentBE.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<byte>(type: "tinyint", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -161,7 +173,8 @@ namespace PresonelManagmentBE.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CategoryId = table.Column<byte>(type: "tinyint", nullable: false),
+                    HourlyRate = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -170,6 +183,34 @@ namespace PresonelManagmentBE.Migrations
                         name: "FK_StaffUsers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_StaffUsers_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReportHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SumOfHours = table.Column<int>(type: "int", nullable: false),
+                    SumOfReports = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReportHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReportHistories_StaffUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "StaffUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -214,6 +255,16 @@ namespace PresonelManagmentBE.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReportHistories_UserId",
+                table: "ReportHistories",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StaffUsers_CategoryId",
+                table: "StaffUsers",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StaffUsers_UserId",
                 table: "StaffUsers",
                 column: "UserId");
@@ -237,13 +288,19 @@ namespace PresonelManagmentBE.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "StaffUsers");
+                name: "ReportHistories");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "StaffUsers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

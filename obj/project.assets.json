@@ -8401,11 +8401,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\ProjektInzynierski\\BE\\PresonelManagmentBE\\PresonelManagmentBE.csproj",
+      "projectUniqueName": "D:\\ProjektInzynierski\\BE\\Azure\\presonel_managment_BE\\PresonelManagmentBE.csproj",
       "projectName": "PresonelManagmentBE",
-      "projectPath": "D:\\ProjektInzynierski\\BE\\PresonelManagmentBE\\PresonelManagmentBE.csproj",
+      "projectPath": "D:\\ProjektInzynierski\\BE\\Azure\\presonel_managment_BE\\PresonelManagmentBE.csproj",
       "packagesPath": "C:\\Users\\48601\\.nuget\\packages\\",
-      "outputPath": "D:\\ProjektInzynierski\\BE\\PresonelManagmentBE\\obj\\",
+      "outputPath": "D:\\ProjektInzynierski\\BE\\Azure\\presonel_managment_BE\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"

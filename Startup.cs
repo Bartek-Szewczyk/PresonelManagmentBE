@@ -36,6 +36,7 @@ namespace PresonelManagmentBE
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUserRepo, UserRepo>();
+            services.AddScoped<IEventRepo, EventRepo>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));

@@ -21,10 +21,14 @@ namespace PresonelManagmentBE.Repositowy
             var apiUser = new List<User>();
             foreach (var singleUser in users)
             {
-                var user = new User();
-                user.Id = singleUser.Id;
-                user.FirstName = singleUser.FirstName;
-                user.LastName = singleUser.LastName;
+                var user = new User
+                {
+                    Id = singleUser.Id,
+                    FirstName = singleUser.FirstName,
+                    LastName = singleUser.LastName,
+                    email = singleUser.Email,
+                    phone = singleUser.PhoneNumber
+                };
                 apiUser.AddRange(new[] { user });
 
             }

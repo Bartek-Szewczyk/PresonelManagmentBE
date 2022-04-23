@@ -10,8 +10,8 @@ using PresonelManagmentBE.Data;
 namespace PresonelManagmentBE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220419163605_newModels")]
-    partial class newModels
+    [Migration("20220423160729_event_model")]
+    partial class event_model
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -240,6 +240,41 @@ namespace PresonelManagmentBE.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("PresonelManagmentBE.Models.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BackgroundColor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte?>("CategoryId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime>("DateEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateStart")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StaffNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Events");
+                });
+
             modelBuilder.Entity("PresonelManagmentBE.Models.ReportHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -340,6 +375,15 @@ namespace PresonelManagmentBE.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PresonelManagmentBE.Models.Event", b =>
+                {
+                    b.HasOne("PresonelManagmentBE.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("PresonelManagmentBE.Models.ReportHistory", b =>

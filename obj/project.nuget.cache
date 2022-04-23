@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "i7Uj2aYei0d/rPe+egP5MCUaTijIXkEJ+1Gbz8zkllZQCfKYLFYMFVf4MJLbPIpGidgW+VWfxuQl7dMeHLbSIQ==",
+  "dgSpecHash": "vGgiAmI2R7EbwdpH+c2tYxoHqsdU+tclYMjrgvuBAgsnKF1n4PtPo84wUhhmCNfxoa34ARyjyOvVX6g6jAPa2A==",
   "success": true,
-  "projectFilePath": "D:\\ProjektInzynierski\\BE\\PresonelManagmentBE\\PresonelManagmentBE.csproj",
+  "projectFilePath": "D:\\ProjektInzynierski\\BE\\Azure\\presonel_managment_BE\\PresonelManagmentBE.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\48601\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\48601\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
