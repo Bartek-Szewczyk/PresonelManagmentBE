@@ -10,7 +10,7 @@ using PresonelManagmentBE.Data;
 namespace PresonelManagmentBE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220419130641_init")]
+    [Migration("20220423145437_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,45 @@ namespace PresonelManagmentBE.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("PresonelManagmentBE.Models.Category", b =>
+                {
+                    b.Property<byte>("Id")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("PresonelManagmentBE.Models.ReportHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SumOfHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SumOfReports")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReportHistories");
+                });
+
             modelBuilder.Entity("PresonelManagmentBE.Models.StaffUser", b =>
                 {
                     b.Property<int>("Id")
@@ -234,13 +273,18 @@ namespace PresonelManagmentBE.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte>("CategoryId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("HourlyRate")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -298,11 +342,28 @@ namespace PresonelManagmentBE.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PresonelManagmentBE.Models.ReportHistory", b =>
+                {
+                    b.HasOne("PresonelManagmentBE.Models.StaffUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PresonelManagmentBE.Models.StaffUser", b =>
                 {
+                    b.HasOne("PresonelManagmentBE.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PresonelManagmentBE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });

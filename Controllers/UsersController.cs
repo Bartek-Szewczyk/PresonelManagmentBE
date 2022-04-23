@@ -13,7 +13,7 @@ namespace PresonelManagmentBE.Controllers
     {
         private readonly IUserRepo _repository;
 
-        public UsersController(IUserRepo repository, IMapper mapper)
+        public UsersController(IUserRepo repository)
         {
             _repository = repository;
         }
