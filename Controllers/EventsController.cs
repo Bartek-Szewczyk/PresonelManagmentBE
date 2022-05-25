@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PresonelManagmentBE.Dtos;
 using PresonelManagmentBE.Interface;
 
@@ -55,6 +55,19 @@ namespace PresonelManagmentBE.Controllers
             _repository.Save();
             
             return addEvent;
+        }
+        // PUT /api/events/{id}
+        [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
+        public ActionResult EditEvent(int id, Models.Event editEvent)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            _repository.UpdateEvent(editEvent);
+            _repository.Save();
+            return Ok();
         }
         
         //DELETE api/events/{id}
