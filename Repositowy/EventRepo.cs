@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PresonelManagmentBE.Data;
 using PresonelManagmentBE.Dtos;
@@ -82,6 +83,22 @@ namespace PresonelManagmentBE.Repositowy
         public EntityEntry<Models.Event> RemoveEvent(Models.Event rmEvent)
         {
             return _context.Events.Remove(rmEvent);
+        }
+
+        public void UpdateEvent(Models.Event editEvent)
+        {
+            var dbEvent = _context.Events.FirstOrDefault(e=>e.Id==editEvent.Id);
+            var dbCategory = _context.Categories.ToList();
+            if (dbEvent == null) return;
+            dbEvent.Title = editEvent.Title;
+            dbEvent.Category = dbCategory.FirstOrDefault(c => c.Id == editEvent.Category.Id);
+            dbEvent.AllDay = editEvent.AllDay;  
+            dbEvent.DateStart = editEvent.DateStart;
+            dbEvent.DateEnd = editEvent.DateEnd;
+            dbEvent.StaffNumber = editEvent.StaffNumber;
+            dbEvent.BackgroundColor = editEvent.BackgroundColor;
+            _context.SaveChanges();
+            
         }
 
         public int Save()

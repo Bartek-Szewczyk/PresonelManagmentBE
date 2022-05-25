@@ -50,7 +50,10 @@ namespace PresonelManagmentBE
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PresonelManagmentBE", Version = "v1" });
             });
+            services.AddCors(); // Make sure you call this previous to AddMvc
+          
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -64,12 +67,15 @@ namespace PresonelManagmentBE
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseCors(
+                options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
+           
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
