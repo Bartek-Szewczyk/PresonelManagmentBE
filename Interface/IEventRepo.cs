@@ -11,6 +11,7 @@ namespace PresonelManagmentBE.Interface
         Models.Event GetEventById(int id);
         EntityEntry<Models.Event> AddEvent(Event addEvent);
         EntityEntry<Models.Event> RemoveEvent(Models.Event rmEvent);
+        void UpdateEvent(Models.Event editEvent);
         int Save();
     }
 }
