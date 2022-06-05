@@ -1,4 +1,6 @@
-﻿namespace PresonelManagmentBE.Dtos
+﻿using PresonelManagmentBE.Models;
+
+namespace PresonelManagmentBE.Dtos
 {
     public class User
     {
@@ -7,5 +9,6 @@
         public string LastName { get; set; }
         public string email { get; set; }
         public string phone { get; set; }
+        public Category Category { get; set; }
     }
 }

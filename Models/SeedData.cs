@@ -42,8 +42,8 @@ namespace PresonelManagmentBE.Models
                    new Event()
                    {
                        Title = "Event 1",
-                       DateStart = new DateTime(2022,4,25,12,50,00),
-                       DateEnd = new DateTime(2022,4,25,12,55,00),
+                       DateStart = new DateTime(2022,6,25,12,50,00),
+                       DateEnd = new DateTime(2022,6,25,12,55,00),
                        AllDay = true,
                        Category = categories[0],
                        StaffNumber = 6,
@@ -51,8 +51,8 @@ namespace PresonelManagmentBE.Models
                    },new Event()
                    {
                        Title = "Event 2",
-                       DateStart = new DateTime(2022,4,30,12,50,00),
-                       DateEnd = new DateTime(2022,4,30,12,55,00),
+                       DateStart = new DateTime(2022,6,30,12,50,00),
+                       DateEnd = new DateTime(2022,6,30,12,55,00),
                        AllDay = true,
                        Category = categories[1],
                        StaffNumber = 8,
@@ -60,8 +60,8 @@ namespace PresonelManagmentBE.Models
                    },new Event()
                    {
                        Title = "Event 3",
-                       DateStart = new DateTime(2022,4,25,12,50,00),
-                       DateEnd = new DateTime(2022,4,25,15,50,00),
+                       DateStart = new DateTime(2022,6,25,12,50,00),
+                       DateEnd = new DateTime(2022,6,25,15,50,00),
                        AllDay = false,
                        Category = categories[2],
                        StaffNumber = 10,
@@ -69,8 +69,8 @@ namespace PresonelManagmentBE.Models
                    },new Event()
                    {
                        Title = "Event 4",
-                       DateStart = new DateTime(2022,4,20,12,50,00),
-                       DateEnd = new DateTime(2022,4,20,12,55,00),
+                       DateStart = new DateTime(2022,6,20,12,50,00),
+                       DateEnd = new DateTime(2022,6,20,12,55,00),
                        AllDay = false,
                        Category = categories[0],
                        StaffNumber = 2,
@@ -78,8 +78,8 @@ namespace PresonelManagmentBE.Models
                    },new Event()
                    {
                        Title = "Event 5",
-                       DateStart = new DateTime(2022,4,28,10,00,00),
-                       DateEnd = new DateTime(2022,4,28,20,00,00),
+                       DateStart = new DateTime(2022,6,28,10,00,00),
+                       DateEnd = new DateTime(2022,6,28,20,00,00),
                        AllDay = false,
                        Category = categories[0],
                        StaffNumber = 5,
@@ -92,43 +92,50 @@ namespace PresonelManagmentBE.Models
                         FirstName = "Alek",
                         LastName = "Sobczak",
                         Email = "AlekS@mail.com",
-                        PhoneNumber = "739153092"
+                        PhoneNumber = "739153092",
+                        Category = categories[0]
                     }, new ApplicationUser()
                     {
                         FirstName = "Piotr",
                         LastName = "Sokołowski",
                         Email = "Piotr.S@mail.com",
-                        PhoneNumber = "823612394"
+                        PhoneNumber = "823612394",
+                        Category = categories[0]
                     },new ApplicationUser()
                     {
                         FirstName = "Aleksandra",
                         LastName = "Michalak",
                         Email = "Aleksandra.M@mail.com",
-                        PhoneNumber = "605612394"
+                        PhoneNumber = "605612394",
+                        Category = categories[1],
                     },new ApplicationUser()
                     {
                         FirstName = "Elena",
                         LastName = "Kubiak",
                         Email = "Elena.K@mail.com",
-                        PhoneNumber = "426782196"
+                        PhoneNumber = "426782196",
+                        Category = categories[1]
                     },new ApplicationUser()
                     {
                         FirstName = "Eugeniusz",
                         LastName = "Błaszczyk",
                         Email = "Eugeniusz.B@mail.com",
-                        PhoneNumber = "602348716"
+                        PhoneNumber = "602348716",
+                        Category = categories[2]
                     },new ApplicationUser()
                     {
                         FirstName = "Adela",
                         LastName = "Jakubowska",
                         Email = "Adela.J@mail.com",
-                        PhoneNumber = "579152486"
+                        PhoneNumber = "579152486",
+                        Category = categories[2]
                     },new ApplicationUser()
                     {
                         FirstName = "Magda",
                         LastName = "Mazur",
                         Email = "Magda.M@mail.com",
-                        PhoneNumber = "813649721"
+                        PhoneNumber = "813649721",
+                        Category = categories[0]
                     });
                 context.SaveChanges();
                 context.ReportHistories.AddRange(
