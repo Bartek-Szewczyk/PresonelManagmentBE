@@ -37,6 +37,7 @@ namespace PresonelManagmentBE
         {
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IEventRepo, EventRepo>();
+            services.AddScoped<IDashboardRepo, DashboardRepo>();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
