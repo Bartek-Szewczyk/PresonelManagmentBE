@@ -97,12 +97,10 @@ namespace PresonelManagmentBE.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -139,12 +137,10 @@ namespace PresonelManagmentBE.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -294,8 +290,8 @@ namespace PresonelManagmentBE.Migrations
                     b.Property<int>("SumOfReports")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -400,7 +396,7 @@ namespace PresonelManagmentBE.Migrations
 
             modelBuilder.Entity("PresonelManagmentBE.Models.ReportHistory", b =>
                 {
-                    b.HasOne("PresonelManagmentBE.Models.StaffUser", "User")
+                    b.HasOne("PresonelManagmentBE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 

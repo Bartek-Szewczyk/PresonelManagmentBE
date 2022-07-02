@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,8 +11,15 @@ namespace PresonelManagmentBE.Models
 {
     public static class SeedData
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async Task Initialize(IServiceProvider serviceProvider)
         {
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var contextDb =
+                new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>());
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+
+
             using (var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
                 if (context.Categories.Any())
@@ -47,7 +56,7 @@ namespace PresonelManagmentBE.Models
                        AllDay = true,
                        Category = categories[0],
                        StaffNumber = 6,
-                       BackgroundColor = "#9EC0ED"
+                       BackgroundColor = "#74CCC4"
                    },new Event()
                    {
                        Title = "Event 2",
@@ -74,7 +83,7 @@ namespace PresonelManagmentBE.Models
                        AllDay = false,
                        Category = categories[0],
                        StaffNumber = 2,
-                       BackgroundColor = "#9EC0ED"
+                       BackgroundColor = "#74CCC4"
                    },new Event()
                    {
                        Title = "Event 5",
@@ -83,70 +92,19 @@ namespace PresonelManagmentBE.Models
                        AllDay = false,
                        Category = categories[0],
                        StaffNumber = 5,
-                       BackgroundColor = "#9EC0ED"
+                       BackgroundColor = "#74CCC4"
                    });
-               context.SaveChanges();
-                context.Users.AddRange(
-                    new ApplicationUser()
-                    {
-                        FirstName = "Alek",
-                        LastName = "Sobczak",
-                        Email = "AlekS@mail.com",
-                        PhoneNumber = "739153092",
-                        Category = categories[0]
-                    }, new ApplicationUser()
-                    {
-                        FirstName = "Piotr",
-                        LastName = "Sokołowski",
-                        Email = "Piotr.S@mail.com",
-                        PhoneNumber = "823612394",
-                        Category = categories[0]
-                    },new ApplicationUser()
-                    {
-                        FirstName = "Aleksandra",
-                        LastName = "Michalak",
-                        Email = "Aleksandra.M@mail.com",
-                        PhoneNumber = "605612394",
-                        Category = categories[1],
-                    },new ApplicationUser()
-                    {
-                        FirstName = "Elena",
-                        LastName = "Kubiak",
-                        Email = "Elena.K@mail.com",
-                        PhoneNumber = "426782196",
-                        Category = categories[1]
-                    },new ApplicationUser()
-                    {
-                        FirstName = "Eugeniusz",
-                        LastName = "Błaszczyk",
-                        Email = "Eugeniusz.B@mail.com",
-                        PhoneNumber = "602348716",
-                        Category = categories[2]
-                    },new ApplicationUser()
-                    {
-                        FirstName = "Adela",
-                        LastName = "Jakubowska",
-                        Email = "Adela.J@mail.com",
-                        PhoneNumber = "579152486",
-                        Category = categories[2]
-                    },new ApplicationUser()
-                    {
-                        FirstName = "Magda",
-                        LastName = "Mazur",
-                        Email = "Magda.M@mail.com",
-                        PhoneNumber = "813649721",
-                        Category = categories[0]
-                    });
-                context.SaveChanges();
-                context.ReportHistories.AddRange(
-                    new ReportHistory()
-                    {
-                        SumOfHours = 189,
-                        SumOfReports = 19,
-                        DateTime = new DateTime(2022,01,02)
-                    });
-                var reports = context.ReportHistories.ToList();
-                var users = context.Users.ToList();
+               await context.SaveChangesAsync();
+              
+                // context.ReportHistories.AddRange(
+                //     new ReportHistory()
+                //     {
+                //         SumOfHours = 189,
+                //         SumOfReports = 19,
+                //         DateTime = new DateTime(2022,01,02)
+                //     });
+                // var reports = context.ReportHistories.ToList();
+                // var users = context.Users.ToList();
                 // context.StaffUsers.AddRange(
                 //     
                 //     new StaffUser()
@@ -158,7 +116,104 @@ namespace PresonelManagmentBE.Models
                 //     });
                 // context.SaveChanges();
             }
+            var categoriesDb = contextDb.Categories.ToList();
+            Console.WriteLine(categoriesDb[0]);
+             var userList = new List<ApplicationUser>();
+               userList.Add(new ApplicationUser(){ 
+                   FirstName = "Alek", 
+                   LastName = "Sobczak",
+                   UserName = "Alek Sobczyk",
+                   Email = "AlekS@mail.com",
+                   PhoneNumber = "739153092",
+                   Category = categoriesDb[0],
+               });
+               userList.Add(new ApplicationUser()
+               { 
+                   FirstName = "Piotr", 
+                   LastName = "Sokołowski",
+                   UserName = "Piotr Sokolowski",
+                   Email = "Piotr.S@mail.com", 
+                   PhoneNumber = "823612394",
+                   Category = categoriesDb[0],
+               });
+               // userList.Add();
+               // userList.Add();
+               // userList.Add();
+               //
+               //
+               //      ,new ApplicationUser()
+               //      {
+               //          FirstName = "Aleksandra",
+               //          LastName = "Michalak",
+               //          Email = "Aleksandra.M@mail.com",
+               //          PhoneNumber = "605612394",
+               //          Category = categories[1],
+               //      },new ApplicationUser()
+               //      {
+               //          FirstName = "Elena",
+               //          LastName = "Kubiak",
+               //          Email = "Elena.K@mail.com",
+               //          PhoneNumber = "426782196",
+               //          Category = categories[1]
+               //      },new ApplicationUser()
+               //      {
+               //          FirstName = "Eugeniusz",
+               //          LastName = "Błaszczyk",
+               //          Email = "Eugeniusz.B@mail.com",
+               //          PhoneNumber = "602348716",
+               //          Category = categories[2]
+               //      },new ApplicationUser()
+               //      {
+               //          FirstName = "Adela",
+               //          LastName = "Jakubowska",
+               //          Email = "Adela.J@mail.com",
+               //          PhoneNumber = "579152486",
+               //          Category = categories[2]
+               //      },new ApplicationUser()
+               //      {
+               //          FirstName = "Magda",
+               //          LastName = "Mazur",
+               //          Email = "Magda.M@mail.com",
+               //          PhoneNumber = "813649721",
+               //          Category = categories[0]
+               //      });
+               //  await context.SaveChangesAsync();
+               //  
+                
+                string userPWD = "Password@1234";
+                ApplicationUser lol = new()
+                { 
+                    FirstName = "imie",
+                    LastName = "nazwisko", 
+                    UserName = "name", 
+                    Email = "mail@mial.coom",
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    PhoneNumber = "1278331",
+                    Category = categoriesDb[1],
+                        
+                };
+                await userManager.CreateAsync(lol, userPWD);
+                foreach (var user in userList)
+                {
+                    ApplicationUser newUser = new()
+                    { 
+                        FirstName = user.FirstName,
+                        LastName = user.LastName, 
+                        UserName = user.UserName, 
+                        Email = user.Email,
+                        SecurityStamp = Guid.NewGuid().ToString(),
+                        PhoneNumber = user.PhoneNumber,
+                        Category = categoriesDb[1],
+                        
+                    };
+                    var createPowerUser = await userManager.CreateAsync(newUser, userPWD);
+                    // if (createPowerUser.Succeeded) 
+                    //     await roleManager.AddToRoleAsync(newUser, UserRoles.User);
+                            
+                }
+
         }
-        
+
+       
     }
 }

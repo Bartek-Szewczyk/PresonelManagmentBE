@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web.Http;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using PresonelManagmentBE.Dtos;
@@ -10,6 +11,7 @@ using PresonelManagmentBE.Interface;
 
 namespace PresonelManagmentBE.Controllers
 {
+    [Microsoft.AspNetCore.Authorization.Authorize]
     [ApiController]
     [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     public class EventsController :ControllerBase

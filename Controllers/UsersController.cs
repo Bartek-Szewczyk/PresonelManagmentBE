@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PresonelManagmentBE.Dtos;
 using PresonelManagmentBE.Interface;
@@ -7,6 +9,7 @@ using PresonelManagmentBE.Models;
 
 namespace PresonelManagmentBE.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UsersController: ControllerBase
@@ -40,8 +43,8 @@ namespace PresonelManagmentBE.Controllers
         [HttpPost]
         public ActionResult<User> CreateUser(User user)
         {
-            _repository.AddUser(user);
-            return Ok();
+            var result = _repository.AddUser(user);
+            return !result.Result.Succeeded ? StatusCode(StatusCodes.Status500InternalServerError, new Response {Status = "Error", Message = "User creation failed"}) : Ok(new Response{Status = "Success", Message = "User created successfully"});
         }
         
         //PUT api/users/{id}

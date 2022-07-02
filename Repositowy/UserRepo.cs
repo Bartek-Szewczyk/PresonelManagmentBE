@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PresonelManagmentBE.Data;
 using PresonelManagmentBE.Dtos;
@@ -11,10 +14,12 @@ namespace PresonelManagmentBE.Repositowy
     public class UserRepo:IUserRepo
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserRepo(ApplicationDbContext context)
+        public UserRepo(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public IEnumerable<User> GetAllUsers()
         {
@@ -67,21 +72,28 @@ namespace PresonelManagmentBE.Repositowy
             _context.SaveChanges();
         }
 
-        public User AddUser(User user)
+        public async Task<IdentityResult> AddUser(User user)
         {
+            string userPWD = "Password@1234";
             var categoryDb = _context.Categories.ToList();
-            var newUser = new ApplicationUser
+            string userName = user.FirstName + user.LastName;
+            ApplicationUser newUser = new ()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                UserName = "GamrotMateusz",
                 Email = user.email,
                 PhoneNumber = user.phone,
-                Category = categoryDb.FirstOrDefault(c => c.Id == user.Category.Id)
+                SecurityStamp = Guid.NewGuid().ToString(),
+                Category = categoryDb.FirstOrDefault(c => c.Id == user.Category.Id),
             };
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            var createPowerUser = await _userManager.CreateAsync(newUser, userPWD);
+            if (createPowerUser.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(newUser, UserRoles.User); 
+            }
 
-            return user;
+            return createPowerUser;
         }
 
         public void DeleteUser(string id)
