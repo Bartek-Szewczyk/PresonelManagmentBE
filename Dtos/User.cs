@@ -10,5 +10,6 @@ namespace PresonelManagmentBE.Dtos
         public string email { get; set; }
         public string phone { get; set; }
         public Category Category { get; set; }
+        public int HourlyRate { get; set; }
     }
 }

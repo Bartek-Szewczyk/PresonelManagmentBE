@@ -28,6 +28,7 @@ namespace PresonelManagmentBE.Models
                 UserName = "AlekSobczyk",
                 Email = "AlekS@mail.com",
                 PhoneNumber = "739153092",
+                HourlyRate = 25,
                 CategoryId = categories[0].Id,
             });
             userList.Add(new ApplicationUser()
@@ -37,6 +38,7 @@ namespace PresonelManagmentBE.Models
                 UserName = "PiotrSokolowski",
                 Email = "Piotr.S@mail.com", 
                 PhoneNumber = "823612394",
+                HourlyRate = 23,
                 CategoryId = categories[0].Id,
             });
             userList.Add(new ApplicationUser()
@@ -46,6 +48,7 @@ namespace PresonelManagmentBE.Models
                 UserName = "AleksandarMichalak",
                 Email = "Aleksandra.M@mail.com",
                 PhoneNumber = "605612394",
+                HourlyRate = 22,
                 CategoryId = categories[1].Id,
             });
             userList.Add(new ApplicationUser()
@@ -55,6 +58,7 @@ namespace PresonelManagmentBE.Models
                 UserName = "ElenaKubiak",
                 Email = "Elena.K@mail.com",
                 PhoneNumber = "426782196",
+                HourlyRate = 25,
                 CategoryId = categories[1].Id
             });
             userList.Add(new ApplicationUser()
@@ -64,6 +68,7 @@ namespace PresonelManagmentBE.Models
                 UserName = "EugeniuszBlaszczyk",
                 Email = "Eugeniusz.B@mail.com",
                 PhoneNumber = "602348716",
+                HourlyRate = 26,
                 CategoryId = categories[2].Id
             });
             userList.Add(new ApplicationUser()
@@ -73,6 +78,7 @@ namespace PresonelManagmentBE.Models
                 UserName = "AdelaJakubowska",
                 Email = "Adela.J@mail.com",
                 PhoneNumber = "579152486",
+                HourlyRate = 21,
                 CategoryId = categories[2].Id
             });
             userList.Add(new ApplicationUser()
@@ -82,6 +88,7 @@ namespace PresonelManagmentBE.Models
                 UserName = "MagdaMazur",
                 Email = "Magda.M@mail.com",
                 PhoneNumber = "813649721",
+                HourlyRate = 28,
                 CategoryId = categories[1].Id,
             });
             
@@ -97,8 +104,8 @@ namespace PresonelManagmentBE.Models
                     Email = user.Email,
                     SecurityStamp = Guid.NewGuid().ToString(),
                     PhoneNumber = user.PhoneNumber,
-                    CategoryId = user.CategoryId
-                        
+                    CategoryId = user.CategoryId,
+                    HourlyRate = user.HourlyRate
                 };
                 
                     var createPowerUser = await userManager.CreateAsync(newUser, userPWD);

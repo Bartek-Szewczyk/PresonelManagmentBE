@@ -8,5 +8,6 @@ namespace PresonelManagmentBE.Models
         public string LastName { get; set; }
         public Category Category { get; set; }
         public byte CategoryId { get; set; }
+        public int HourlyRate { get; set; }
     }
 }

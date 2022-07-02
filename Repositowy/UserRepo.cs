@@ -53,7 +53,8 @@ namespace PresonelManagmentBE.Repositowy
                 LastName = userDb.LastName,
                 email = userDb.Email,
                 phone = userDb.PhoneNumber,
-                Category = dbCategory.FirstOrDefault(c => c.Id == userDb.Category.Id)
+                Category = dbCategory.FirstOrDefault(c => c.Id == userDb.Category.Id),
+                HourlyRate = userDb.HourlyRate,
             };
             return user;
 
@@ -69,23 +70,25 @@ namespace PresonelManagmentBE.Repositowy
             userDb.Email = user.email;
             userDb.PhoneNumber = user.phone;
             userDb.Category = categoryDb.FirstOrDefault(c => c.Id == user.Category.Id);
+            userDb.HourlyRate = user.HourlyRate;
             _context.SaveChanges();
         }
 
         public async Task<IdentityResult> AddUser(User user)
         {
-            string userPWD = "Password@1234";
+            const string userPWD = "Password@1234";
             var categoryDb = _context.Categories.ToList();
-            string userName = user.FirstName + user.LastName;
+            string userName = $"{user.FirstName}{user.LastName}";
             ApplicationUser newUser = new ()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                UserName = "GamrotMateusz",
+                UserName = userName,
                 Email = user.email,
                 PhoneNumber = user.phone,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 Category = categoryDb.FirstOrDefault(c => c.Id == user.Category.Id),
+                HourlyRate = user.HourlyRate,
             };
             var createPowerUser = await _userManager.CreateAsync(newUser, userPWD);
             if (createPowerUser.Succeeded)
