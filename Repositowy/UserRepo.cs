@@ -76,7 +76,8 @@ namespace PresonelManagmentBE.Repositowy
 
         public async Task<IdentityResult> AddUser(User user)
         {
-            const string userPWD = "Password@1234";
+            string userPWD = user.Password;
+            bool isAdmin = user.IsAdmin ? user.IsAdmin : false;
             var categoryDb = _context.Categories.ToList();
             string userName = $"{user.FirstName}{user.LastName}";
             ApplicationUser newUser = new ()
@@ -93,7 +94,15 @@ namespace PresonelManagmentBE.Repositowy
             var createPowerUser = await _userManager.CreateAsync(newUser, userPWD);
             if (createPowerUser.Succeeded)
             {
-                await _userManager.AddToRoleAsync(newUser, UserRoles.User); 
+                if(isAdmin)
+                {
+                    await _userManager.AddToRoleAsync(newUser, UserRoles.Admin); 
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(newUser, UserRoles.User); 
+                }
+                
             }
 
             return createPowerUser;

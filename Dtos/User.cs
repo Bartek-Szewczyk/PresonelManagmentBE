@@ -11,5 +11,7 @@ namespace PresonelManagmentBE.Dtos
         public string phone { get; set; }
         public Category Category { get; set; }
         public int HourlyRate { get; set; }
+        public string Password { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

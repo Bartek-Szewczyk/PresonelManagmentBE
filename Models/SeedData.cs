@@ -44,6 +44,11 @@ namespace PresonelManagmentBE.Models
                    {
                        Id = 3,
                        Name = "Kucharz"
+                   },
+                   new Category()
+                   {
+                       Id = 4,
+                       Name = "Manager"
                    });
                context.SaveChanges();
                var categories = context.Categories.ToList();

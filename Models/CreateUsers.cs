@@ -38,8 +38,8 @@ namespace PresonelManagmentBE.Models
                 UserName = "PiotrSokolowski",
                 Email = "Piotr.S@mail.com", 
                 PhoneNumber = "823612394",
-                HourlyRate = 23,
-                CategoryId = categories[0].Id,
+                HourlyRate = 35,
+                CategoryId = categories[3].Id,
             });
             userList.Add(new ApplicationUser()
             {
@@ -93,7 +93,7 @@ namespace PresonelManagmentBE.Models
             });
             
             
-            string userPWD = "Password@1234";
+            string userPWD = "Password1234";
             foreach (var user in userList)
             {
                 ApplicationUser newUser = new()
@@ -111,7 +111,7 @@ namespace PresonelManagmentBE.Models
                     var createPowerUser = await userManager.CreateAsync(newUser, userPWD);
 
                     if (!createPowerUser.Succeeded) continue;
-                    if (newUser.FirstName == "Piotr")
+                    if (newUser.CategoryId == 4)
                     {
                         await userManager.AddToRoleAsync(newUser, UserRoles.Admin);
                     }
