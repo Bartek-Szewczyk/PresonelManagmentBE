@@ -1,11 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Web.Http;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
+using Microsoft.Net.Http.Headers;
 using PresonelManagmentBE.Dtos;
 using PresonelManagmentBE.Interface;
 
@@ -18,17 +25,27 @@ namespace PresonelManagmentBE.Controllers
     {
         private readonly IEventRepo _repository;
         private readonly IMapper _mapper;
+        private readonly IUserRepo _userRepo;
 
-        public EventsController(IEventRepo repository,IMapper mapper)
+        public EventsController(IEventRepo repository,IMapper mapper,IUserRepo userRepo)
         {
             _repository = repository;
             _mapper = mapper;
+            _userRepo = userRepo;
         }
+        
         //GET api/events
         [Microsoft.AspNetCore.Mvc.HttpGet]
         public ActionResult<IEnumerable<Event>> GetAllEvent()
         {
+            var username = User.Identity.Name;
+            var userCategoryId = _userRepo.GetUserCategoryByName(username);
             var events = _repository.GetAllEvents();
+            if (userCategoryId != 4)
+            {
+                events = events.Where(e => e.Category.Id == userCategoryId).ToArray();
+            }
+            
             return Ok(events);
         }
         

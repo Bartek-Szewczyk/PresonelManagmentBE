@@ -13,5 +13,6 @@ namespace PresonelManagmentBE.Interface
         void UpdateUser(User user);
         Task<IdentityResult> AddUser(User user);
         void DeleteUser(string id);
+        int GetUserCategoryByName(string name);
     }
 }

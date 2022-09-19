@@ -59,6 +59,14 @@ namespace PresonelManagmentBE.Repositowy
             return user;
 
         }
+        public int GetUserCategoryByName(string name)
+        {
+            var userDb = _context.Users.FirstOrDefault(u => u.UserName == name);
+            var dbCategory = _context.Categories.ToList();
+            Category cat = dbCategory.FirstOrDefault(c => c.Id == userDb.Category.Id);
+            return cat.Id;
+        }
+        
 
         public void UpdateUser(User user)
         {
