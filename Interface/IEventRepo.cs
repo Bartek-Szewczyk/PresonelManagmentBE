@@ -8,9 +8,9 @@ namespace PresonelManagmentBE.Interface
     public interface IEventRepo
     {
         IEnumerable<Event> GetAllEvents();
-        Models.Event GetEventById(int id);
+        Event GetEventById(int id);
         EntityEntry<Models.Event> AddEvent(Event addEvent);
-        EntityEntry<Models.Event> RemoveEvent(Models.Event rmEvent);
+        EntityEntry<Models.Event> RemoveEvent(Event rmEvent);
         void UpdateEvent(Models.Event editEvent);
         int Save();
     }

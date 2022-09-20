@@ -5,8 +5,9 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PresonelManagmentBE.Data;
-using PresonelManagmentBE.Dtos;
 using PresonelManagmentBE.Interface;
+using PresonelManagmentBE.Models;
+using Event = PresonelManagmentBE.Dtos.Event;
 
 namespace PresonelManagmentBE.Repositowy
 {
@@ -25,6 +26,7 @@ namespace PresonelManagmentBE.Repositowy
             var apiEvents = new List<Event>();
             foreach (var singleEvent in dbEvents)
             {
+                
                 var newEvent = new Event
                 {
                     Id = singleEvent.Id,
@@ -42,10 +44,19 @@ namespace PresonelManagmentBE.Repositowy
             return apiEvents;
         }
 
-        public Models.Event GetEventById(int id)
+        public Event GetEventById(int id)
         {
             var dbCategory = _context.Categories.ToList();
             var dbEvent = _context.Events.FirstOrDefault(e=>e.Id==id);
+            var dbUserEvents = _context.UserEvents.ToList();
+            var dbUsers = _context.Users.ToList();
+            
+            var staffListId = dbUserEvents.Where(u=>u.Event.Id == id).ToArray();
+            List<ApplicationUser> staffList = new List<ApplicationUser>();
+            foreach (var staff in staffListId)
+            {
+                staffList.Add(dbUsers.FirstOrDefault(u=>u.Id == staff.User.Id));
+            }
 
             var apiEvent = new Event
                 {
@@ -56,10 +67,11 @@ namespace PresonelManagmentBE.Repositowy
                     DateStart = dbEvent.DateStart,
                     DateEnd = dbEvent.DateEnd,
                     StaffNumber = dbEvent.StaffNumber,
-                    BackgroundColor = dbEvent.BackgroundColor
+                    BackgroundColor = dbEvent.BackgroundColor,
+                    Staff = staffList
                 };
 
-                return dbEvent;
+                return apiEvent;
             
         }
 
@@ -80,9 +92,10 @@ namespace PresonelManagmentBE.Repositowy
             return _context.Events.Add(dbEvent);
         }
 
-        public EntityEntry<Models.Event> RemoveEvent(Models.Event rmEvent)
+        public EntityEntry<Models.Event> RemoveEvent(Event rmEvent)
         {
-            return _context.Events.Remove(rmEvent);
+            var dbEvent = _context.Events.FirstOrDefault(e=>e.Id==rmEvent.Id);
+            return _context.Events.Remove(dbEvent);
         }
 
         public void UpdateEvent(Models.Event editEvent)

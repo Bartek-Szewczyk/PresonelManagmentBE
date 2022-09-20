@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PresonelManagmentBE.Data;
+using PresonelManagmentBE.Dtos;
 
 namespace PresonelManagmentBE.Models
 {
@@ -100,27 +101,30 @@ namespace PresonelManagmentBE.Models
                        BackgroundColor = "#74CCC4"
                    });
                await context.SaveChangesAsync();
-              
-                // context.ReportHistories.AddRange(
-                //     new ReportHistory()
-                //     {
-                //         SumOfHours = 189,
-                //         SumOfReports = 19,
-                //         DateTime = new DateTime(2022,01,02)
-                //     });
-                // var reports = context.ReportHistories.ToList();
-                // var users = context.Users.ToList();
-                // context.StaffUsers.AddRange(
-                //     
-                //     new StaffUser()
-                //     {
-                //         Id = 1,
-                //         User = users[0],
-                //         CategoryId = 1,
-                //       //  ReportHistory = reports[0]
-                //     });
-                // context.SaveChanges();
+
+               // context.ReportHistories.AddRange(
+               //     new ReportHistory()
+               //     {
+               //         SumOfHours = 189,
+               //         SumOfReports = 19,
+               //         DateTime = new DateTime(2022,01,02)
+               //     });
+               // var reports = context.ReportHistories.ToList();
+               // var users = context.Users.ToList();
+               // context.StaffUsers.AddRange(
+               //     
+               //     new StaffUser()
+               //     {
+               //         Id = 1,
+               //         User = users[0],
+               //         CategoryId = 1,
+               //       //  ReportHistory = reports[0]
+               //     });
+               // context.SaveChanges();
             }
+
+           
+            
             var categoriesDb = contextDb.Categories.ToList();
             Console.WriteLine(categoriesDb[0]);
              var userList = new List<ApplicationUser>();
