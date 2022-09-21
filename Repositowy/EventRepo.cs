@@ -22,11 +22,9 @@ namespace PresonelManagmentBE.Repositowy
         public IEnumerable<Event> GetAllEvents()
         {
             var dbEvents = _context.Events.ToList();
-            var dbCategory = _context.Categories.ToList();
             var apiEvents = new List<Event>();
             foreach (var singleEvent in dbEvents)
             {
-                
                 var newEvent = new Event
                 {
                     Id = singleEvent.Id,
@@ -36,7 +34,8 @@ namespace PresonelManagmentBE.Repositowy
                     DateStart = singleEvent.DateStart,
                     DateEnd = singleEvent.DateEnd,
                     StaffNumber = singleEvent.StaffNumber,
-                    BackgroundColor = singleEvent.BackgroundColor
+                    BackgroundColor = singleEvent.BackgroundColor,
+                    Staff = getStaffList(singleEvent.Id)
                 };
                 apiEvents.AddRange(new []{newEvent});
             }
@@ -48,16 +47,6 @@ namespace PresonelManagmentBE.Repositowy
         {
             var dbCategory = _context.Categories.ToList();
             var dbEvent = _context.Events.FirstOrDefault(e=>e.Id==id);
-            var dbUserEvents = _context.UserEvents.ToList();
-            var dbUsers = _context.Users.ToList();
-            
-            var staffListId = dbUserEvents.Where(u=>u.Event.Id == id).ToArray();
-            List<ApplicationUser> staffList = new List<ApplicationUser>();
-            foreach (var staff in staffListId)
-            {
-                staffList.Add(dbUsers.FirstOrDefault(u=>u.Id == staff.User.Id));
-            }
-
             var apiEvent = new Event
                 {
                     Id = dbEvent.Id,
@@ -68,11 +57,20 @@ namespace PresonelManagmentBE.Repositowy
                     DateEnd = dbEvent.DateEnd,
                     StaffNumber = dbEvent.StaffNumber,
                     BackgroundColor = dbEvent.BackgroundColor,
-                    Staff = staffList
+                    Staff = getStaffList(id)
                 };
 
                 return apiEvent;
             
+        }
+        
+        private List<ApplicationUser> getStaffList(int eventId)
+        {
+            var dbUserEvents = _context.UserEvents.ToList();
+            var dbUsers = _context.Users.ToList();
+            
+            var staffListId = dbUserEvents.FindAll(u=>u?.Event?.Id == eventId);
+            return staffListId.Select(staff => dbUsers.FirstOrDefault(u => u.Id == staff.User.Id)).ToList();
         }
 
         public EntityEntry<Models.Event> AddEvent(Event addEvent)
