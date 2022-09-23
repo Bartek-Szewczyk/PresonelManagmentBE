@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PresonelManagmentBE.Data;
 using PresonelManagmentBE.Dtos;
@@ -11,14 +14,17 @@ namespace PresonelManagmentBE.Repositowy
     public class UserRepo:IUserRepo
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserRepo(ApplicationDbContext context)
+        public UserRepo(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public IEnumerable<User> GetAllUsers()
         {
             var users = _context.Users.ToList();
+            var dbCategory = _context.Categories.ToList();
             var apiUser = new List<User>();
             foreach (var user in users.Select(singleUser => new User
             {
@@ -26,7 +32,8 @@ namespace PresonelManagmentBE.Repositowy
                 FirstName = singleUser.FirstName,
                 LastName = singleUser.LastName,
                 email = singleUser.Email,
-                phone = singleUser.PhoneNumber
+                phone = singleUser.PhoneNumber,
+                Category = dbCategory.FirstOrDefault(c => c.Id == singleUser.Category.Id)
             }))
             {
                 apiUser.AddRange(new[] { user });
@@ -37,6 +44,7 @@ namespace PresonelManagmentBE.Repositowy
         public User GetUserById(string id)
         {
             var userDb = _context.Users.FirstOrDefault(u => u.Id == id);
+            var dbCategory = _context.Categories.ToList();
             if (userDb == null) return null;
             var user = new User
             {
@@ -44,36 +52,68 @@ namespace PresonelManagmentBE.Repositowy
                 FirstName = userDb.FirstName,
                 LastName = userDb.LastName,
                 email = userDb.Email,
-                phone = userDb.PhoneNumber
+                phone = userDb.PhoneNumber,
+                Category = dbCategory.FirstOrDefault(c => c.Id == userDb.Category.Id),
+                HourlyRate = userDb.HourlyRate,
             };
             return user;
 
         }
+        public int GetUserCategoryByName(string name)
+        {
+            var userDb = _context.Users.FirstOrDefault(u => u.UserName == name);
+            var dbCategory = _context.Categories.ToList();
+            Category cat = dbCategory.FirstOrDefault(c => c.Id == userDb.Category.Id);
+            return cat.Id;
+        }
+        
 
         public void UpdateUser(User user)
         {
             var userDb = _context.Users.FirstOrDefault(u => u.Id == user.Id);
+            var categoryDb = _context.Categories.ToList();
             if (userDb == null) return;
             userDb.FirstName = user.FirstName;
             userDb.LastName = user.LastName;
             userDb.Email = user.email;
             userDb.PhoneNumber = user.phone;
+            userDb.Category = categoryDb.FirstOrDefault(c => c.Id == user.Category.Id);
+            userDb.HourlyRate = user.HourlyRate;
             _context.SaveChanges();
         }
 
-        public User AddUser(User user)
+        public async Task<IdentityResult> AddUser(User user)
         {
-            var newUser = new ApplicationUser
+            string userPWD = user.Password;
+            bool isAdmin = user.IsAdmin ? user.IsAdmin : false;
+            var categoryDb = _context.Categories.ToList();
+            string userName = $"{user.FirstName}{user.LastName}";
+            ApplicationUser newUser = new ()
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                UserName = userName,
                 Email = user.email,
-                PhoneNumber = user.phone
+                PhoneNumber = user.phone,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                Category = categoryDb.FirstOrDefault(c => c.Id == user.Category.Id),
+                HourlyRate = user.HourlyRate,
             };
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            var createPowerUser = await _userManager.CreateAsync(newUser, userPWD);
+            if (createPowerUser.Succeeded)
+            {
+                if(isAdmin)
+                {
+                    await _userManager.AddToRoleAsync(newUser, UserRoles.Admin); 
+                }
+                else
+                {
+                    await _userManager.AddToRoleAsync(newUser, UserRoles.User); 
+                }
+                
+            }
 
-            return user;
+            return createPowerUser;
         }
 
         public void DeleteUser(string id)

@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PresonelManagmentBE.Data;
 using PresonelManagmentBE.Dtos;
 using PresonelManagmentBE.Interface;
+using PresonelManagmentBE.Models;
+using Event = PresonelManagmentBE.Dtos.Event;
 
 namespace PresonelManagmentBE.Repositowy
 {
@@ -21,7 +23,6 @@ namespace PresonelManagmentBE.Repositowy
         public IEnumerable<Event> GetAllEvents()
         {
             var dbEvents = _context.Events.ToList();
-            var dbCategory = _context.Categories.ToList();
             var apiEvents = new List<Event>();
             foreach (var singleEvent in dbEvents)
             {
@@ -34,7 +35,8 @@ namespace PresonelManagmentBE.Repositowy
                     DateStart = singleEvent.DateStart,
                     DateEnd = singleEvent.DateEnd,
                     StaffNumber = singleEvent.StaffNumber,
-                    BackgroundColor = singleEvent.BackgroundColor
+                    BackgroundColor = singleEvent.BackgroundColor,
+                    Staff = getStaffList(singleEvent.Id)
                 };
                 apiEvents.AddRange(new []{newEvent});
             }
@@ -42,11 +44,10 @@ namespace PresonelManagmentBE.Repositowy
             return apiEvents;
         }
 
-        public Models.Event GetEventById(int id)
+        public Event GetEventById(int id)
         {
             var dbCategory = _context.Categories.ToList();
             var dbEvent = _context.Events.FirstOrDefault(e=>e.Id==id);
-
             var apiEvent = new Event
                 {
                     Id = dbEvent.Id,
@@ -56,11 +57,34 @@ namespace PresonelManagmentBE.Repositowy
                     DateStart = dbEvent.DateStart,
                     DateEnd = dbEvent.DateEnd,
                     StaffNumber = dbEvent.StaffNumber,
-                    BackgroundColor = dbEvent.BackgroundColor
+                    BackgroundColor = dbEvent.BackgroundColor,
+                    Staff = getStaffList(id)
                 };
 
-                return dbEvent;
+                return apiEvent;
             
+        }
+        
+        private List<StaffUser> getStaffList(int eventId)
+        {
+            var dbUserEvents = _context.UserEvents.ToList();
+            var dbUsers = _context.Users.ToList();
+            
+            var staffListId = dbUserEvents.FindAll(u=>u?.Event?.Id == eventId);
+            var staffList = new List<StaffUser>();
+            foreach(var staff in staffListId)
+            {
+                var user = dbUsers.FirstOrDefault(u=>u.Id == staff.User.Id);
+                var staffUser = new StaffUser
+                {
+                    userId = user.Id,
+                    name = user.FirstName,
+                    surname = user.LastName,
+                    approved = staff.Approved
+                };
+                staffList.Add(staffUser);
+            }
+            return staffList;
         }
 
         public EntityEntry<Models.Event> AddEvent(Event addEvent)
@@ -80,9 +104,10 @@ namespace PresonelManagmentBE.Repositowy
             return _context.Events.Add(dbEvent);
         }
 
-        public EntityEntry<Models.Event> RemoveEvent(Models.Event rmEvent)
+        public EntityEntry<Models.Event> RemoveEvent(Event rmEvent)
         {
-            return _context.Events.Remove(rmEvent);
+            var dbEvent = _context.Events.FirstOrDefault(e=>e.Id==rmEvent.Id);
+            return _context.Events.Remove(dbEvent);
         }
 
         public void UpdateEvent(Models.Event editEvent)
@@ -99,6 +124,34 @@ namespace PresonelManagmentBE.Repositowy
             dbEvent.BackgroundColor = editEvent.BackgroundColor;
             _context.SaveChanges();
             
+        }
+
+        public UserEvents AddUserToEvent(string userName, int eventId)
+        {
+            var dbEvent = _context.Events.FirstOrDefault(e=>e.Id==eventId);
+            var dbUser = _context.Users.FirstOrDefault(u=>u.UserName==userName);
+            var userEv = new UserEvents
+            {
+                User = dbUser,
+                Event = dbEvent,
+                Approved = false
+            };
+             _context.UserEvents.Add(userEv);
+             return userEv;
+        }
+        public void UpdateUserToEvent(UserToEvent userToEvent)
+        {
+            var dbUserEvent = _context.UserEvents.FirstOrDefault(e=>e.Event.Id==userToEvent.eventId && e.User.Id==userToEvent.userId);
+            if (dbUserEvent != null) dbUserEvent.Approved = userToEvent.approved;
+            _context.SaveChanges();
+        }
+
+        public void DeleteUserToEvent(string userName, int eventId)
+        {
+            var dbUser = _context.Users.FirstOrDefault(u=>u.UserName==userName);
+            var dbUserEvent = _context.UserEvents.FirstOrDefault(e=>e.Event.Id==eventId && e.User.Id==dbUser.Id);
+            if (dbUserEvent != null) _context.UserEvents.Remove(dbUserEvent);
+            _context.SaveChanges();
         }
 
         public int Save()

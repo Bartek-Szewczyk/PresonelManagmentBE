@@ -11,7 +11,7 @@ namespace PresonelManagmentBE.Data
                {
                }
      
-        public DbSet<StaffUser> StaffUsers { get; set; } 
+        public DbSet<UserEvents> UserEvents { get; set; } 
         public DbSet<Category> Categories { get; set; }
         public DbSet<ReportHistory> ReportHistories { get; set; }
         public DbSet<Event> Events { get; set; }

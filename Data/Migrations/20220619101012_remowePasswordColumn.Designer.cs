@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PresonelManagmentBE.Data;
 
 namespace PresonelManagmentBE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220619101012_remowePasswordColumn")]
+    partial class remowePasswordColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +160,7 @@ namespace PresonelManagmentBE.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<byte>("CategoryId")
+                    b.Property<byte?>("CategoryId")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -174,9 +176,6 @@ namespace PresonelManagmentBE.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("HourlyRate")
-                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
@@ -303,17 +302,17 @@ namespace PresonelManagmentBE.Migrations
                     b.ToTable("ReportHistories");
                 });
 
-            modelBuilder.Entity("PresonelManagmentBE.Models.UserEvents", b =>
+            modelBuilder.Entity("PresonelManagmentBE.Models.StaffUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Approved")
-                        .HasColumnType("bit");
+                    b.Property<byte>("CategoryId")
+                        .HasColumnType("tinyint");
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("HourlyRate")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -321,11 +320,11 @@ namespace PresonelManagmentBE.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserEvents");
+                    b.ToTable("StaffUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -383,9 +382,7 @@ namespace PresonelManagmentBE.Migrations
                 {
                     b.HasOne("PresonelManagmentBE.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
@@ -408,17 +405,19 @@ namespace PresonelManagmentBE.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PresonelManagmentBE.Models.UserEvents", b =>
+            modelBuilder.Entity("PresonelManagmentBE.Models.StaffUser", b =>
                 {
-                    b.HasOne("PresonelManagmentBE.Models.Event", "Event")
+                    b.HasOne("PresonelManagmentBE.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("EventId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PresonelManagmentBE.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Event");
+                    b.Navigation("Category");
 
                     b.Navigation("User");
                 });
