@@ -14,6 +14,6 @@ namespace PresonelManagmentBE.Dtos
         public Category Category { get; set; }
         public int StaffNumber { get; set; }
         public string BackgroundColor { get; set; }
-        public List<ApplicationUser> Staff { get; set; }
+        public List<StaffUser> Staff { get; set; }
     }
 }

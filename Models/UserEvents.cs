@@ -9,5 +9,6 @@ namespace PresonelManagmentBE.Models
         public int Id { get; set; }
         public ApplicationUser User { get; set; }
         public Event Event { get; set; }
+        public bool Approved { get; set; }
     }
 }

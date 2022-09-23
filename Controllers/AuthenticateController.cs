@@ -60,7 +60,8 @@ namespace PresonelManagmentBE.Controllers
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo,
-                    userRole = userRoles
+                    userRole = userRoles,
+                    userId = user.Id
                 });
             }
 
